@@ -1,125 +1,260 @@
-# Experiment 1: Entity-Relationship (ER) Diagram
+## AIM
+To study and implement DDL commands and different types of constraints.
 
-## 🎯 Objective:
-To understand and apply the concepts of ER modeling by creating an ER diagram for a real-world application.
+## THEORY
 
-## 📚 Purpose:
-The purpose of this workshop is to gain hands-on experience in designing ER diagrams that visually represent the structure of a database including entities, relationships, attributes, and constraints.
+### 1. CREATE
+Used to create a new relation (table).
 
----
+**Syntax:**
+```sql
+CREATE TABLE (
+  field_1 data_type(size),
+  field_2 data_type(size),
+  ...
+);
+```
+### 2. ALTER
+Used to add, modify, drop, or rename fields in an existing relation.
+(a) ADD
+```sql
+ALTER TABLE std ADD (Address CHAR(10));
+```
+(b) MODIFY
+```sql
+ALTER TABLE relation_name MODIFY (field_1 new_data_type(size));
+```
+(c) DROP
+```sql
+ALTER TABLE relation_name DROP COLUMN field_name;
+```
+(d) RENAME
+```sql
+ALTER TABLE relation_name RENAME COLUMN old_field_name TO new_field_name;
+```
+### 3. DROP TABLE
+Used to permanently delete the structure and data of a table.
+```sql
+DROP TABLE relation_name;
+```
+### 4. RENAME
+Used to rename an existing database object.
+```sql
+RENAME TABLE old_relation_name TO new_relation_name;
+```
+### CONSTRAINTS
+Constraints are used to specify rules for the data in a table. If there is any violation between the constraint and the data action, the action is aborted by the constraint. It can be specified when the table is created (using CREATE TABLE) or after it is created (using ALTER TABLE).
+### 1. NOT NULL
+When a column is defined as NOT NULL, it becomes mandatory to enter a value in that column.
+Syntax:
+```sql
+CREATE TABLE Table_Name (
+  column_name data_type(size) NOT NULL
+);
+```
+### 2. UNIQUE
+Ensures that values in a column are unique.
+Syntax:
+```sql
+CREATE TABLE Table_Name (
+  column_name data_type(size) UNIQUE
+);
+```
+### 3. CHECK
+Specifies a condition that each row must satisfy.
+Syntax:
+```sql
+CREATE TABLE Table_Name (
+  column_name data_type(size) CHECK (logical_expression)
+);
+```
+### 4. PRIMARY KEY
+Used to uniquely identify each record in a table.
+Properties:
+Must contain unique values.
+Cannot be null.
+Should contain minimal fields.
+Syntax:
+```sql
+CREATE TABLE Table_Name (
+  column_name data_type(size) PRIMARY KEY
+);
+```
+### 5. FOREIGN KEY
+Used to reference the primary key of another table.
+Syntax:
+```sql
+CREATE TABLE Table_Name (
+  column_name data_type(size),
+  FOREIGN KEY (column_name) REFERENCES other_table(column)
+);
+```
+### 6. DEFAULT
+Used to insert a default value into a column if no value is specified.
+
+Syntax:
+```sql
+CREATE TABLE Table_Name (
+  col_name1 data_type,
+  col_name2 data_type,
+  col_name3 data_type DEFAULT 'default_value'
+);
+```
+
+# **Question 1**
+<img width="1235" height="425" alt="image" src="https://github.com/user-attachments/assets/bfdb6710-ccb0-4fae-8a68-154814cd62f6" />
+
+```sql
+create table Tasks(
+TaskID INTEGER,
+TaskName TEXT,
+DueDate DATE
+)
+```
+# **Output:**
+
+<img width="1234" height="467" alt="image" src="https://github.com/user-attachments/assets/cc733442-033f-4c7a-9756-c82b33a427e9" />
 
 
+# **Question 2**
 
-### 🔹 Scenario 1: University Database
-Design a database to manage students, instructors, programs, courses, and student enrollments. Include prerequisites for courses.
+<img width="1233" height="496" alt="image" src="https://github.com/user-attachments/assets/12e0c7f7-6b7d-4b0a-b352-8206e7857a03" />
 
-**User Requirements:**
-- Academic programs grouped under departments.
-- Students have admission number, name, DOB, contact info.
-- Instructors with staff number, contact info, etc.
-- Courses have number, name, credits.
-- Track course enrollments by students and enrollment date.
-- Add support for prerequisites (some courses require others).
+```sql
+create table orders(
+ord_id TEXT NOT NULL check(length(ord_id)=4),
+item_id TEXT NOT NULL,
+ord_date DATE,
+ord_qty INTEGER,
+cost INTEGER,
+PRIMARY KEY (item_id,ord_date)
+)
+```
 
----
+# **Output:**
 
-
-
----
-
-## 📝 Tasks:
-1. Identify entities, relationships, and attributes.
-2. Draw the ER diagram using any tool (draw.io, dbdiagram.io, hand-drawn and scanned).
-3. Include:
-   - Cardinality & participation constraints
-   - Prerequisites for University OR Billing for Hospital
-4. Explain:
-   - Why you chose the entities and relationships.
-   - How you modeled prerequisites or billing.
+<img width="1234" height="416" alt="image" src="https://github.com/user-attachments/assets/77560764-9843-4d20-86f6-3bd94cf297f2" />
 
 
-## Scenario Chosen:
-University
+# **Question 3**
 
-## ER Diagram:
-![Screenshot 2025-04-30 202032](https://github.com/user-attachments/assets/1bca0c53-c744-4359-b232-2387573ad1f9)
+<img width="1234" height="373" alt="image" src="https://github.com/user-attachments/assets/03032cf8-53b1-413e-b8bc-a7e6d6420d5b" />
+
+```sql
+alter table Student_details add column email TEXT NOT NULL DEFAULT 'Invalid'
+```
+
+# **Output:**
+
+<img width="1235" height="325" alt="image" src="https://github.com/user-attachments/assets/e41bddb9-dd95-43d7-b5b3-ebe858f27f61" />
+
+# **Question 4**
+<img width="1235" height="419" alt="image" src="https://github.com/user-attachments/assets/b70c27ac-5a2f-4e3b-93eb-70cb41abad29" />
 
 
-## Entities and Attributes:
-Student
+```sql
+create table Products(
+ProductID INTEGER PRIMARY KEY,
+ProductName TEXT UNIQUE NOT NULL,
+Price REAL check (Price>0),
+StockQuantity INTEGER check (StockQuantity>=0)
+)
+```
 
-Attributes: StudentID (Primary Key), FullName, DateOfBirth
+# **Output:**
 
-Department
+<img width="1238" height="378" alt="image" src="https://github.com/user-attachments/assets/ac725ef7-3995-43d2-84a7-ccc277e8df72" />
 
-Attributes: DepartmentID (Primary Key), Name, CourseName (Note: CourseName seems misplaced here — likely a separate entity is needed for Course)
 
-Program
+# **Question 5**
 
-Attributes: ProgramID (Primary Key), Program Name, DepartmentID (Foreign Key)
+<img width="1235" height="372" alt="image" src="https://github.com/user-attachments/assets/17a34ced-3e31-4bbc-b092-d6d36b24db00" />
 
-Teaches (Modeled as an entity but may be better as a relationship)
+```sql
+create table ProjectAssignments(
+AssignmentID INTEGER PRIMARY KEY,
+EmployeeID INTEGER,
+ProjectID INTEGER,
+AssignmentDate DATE NOT NULL,
+FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+FOREIGN KEY (ProjectID) REFERENCES Projects(ProjectID)
+)
+```
 
-Attributes: InstructorID, CourseID, staff number
-...
+# **Output:**
 
-## Relationships and Constraints:
-University
+<img width="1241" height="369" alt="image" src="https://github.com/user-attachments/assets/deb32b76-87d2-4848-9d6f-fff49b42eb62" />
 
-Entities involved: Student, Department, Program
+# **Question 6**
+<img width="1240" height="352" alt="image" src="https://github.com/user-attachments/assets/1d861264-afa5-48cf-975d-fe628ce06deb" />
 
-Cardinality:
 
-A Student belongs to one Department
+```sql
+alter table customers add column email TEXT
+```
 
-A Program is part of one Department
+# **Output:**
 
-A Department can have many Students and Programs
+<img width="1237" height="379" alt="image" src="https://github.com/user-attachments/assets/6bcf4743-3dd9-414f-bdb7-c3a64877dac3" />
 
-Participation:
+# **Question 7**
+<img width="1230" height="412" alt="image" src="https://github.com/user-attachments/assets/f1a40d99-060a-481b-9520-2bcea59cde6a" />
 
-Total for Students (every student must be in a department)
 
-Partial for Departments (not every department needs students/programs, possibly)
+```sql
+insert into customers ("CustomerID","Name","Address","City","ZipCode") values ("302","Laura Croft","456 Elm St","Seattle","98101"),("303","Bruce Wayne","789 Oak St","Gotham","10001")
+```
 
-Teaches
+# **Output:**
 
-Entities involved: Possibly Instructor, Course
+<img width="1235" height="470" alt="image" src="https://github.com/user-attachments/assets/ec2d8c09-1960-43eb-9435-8315107000e2" />
 
-Cardinality: Many-to-Many (an Instructor can teach many courses, and a course can be taught by many instructors)
+# **Question 8**
+<img width="1236" height="261" alt="image" src="https://github.com/user-attachments/assets/11d6f7b1-10fa-4b0b-b8a6-02cfab362e18" />
 
-Participation: Partial for both
 
-Note: The diagram lacks clear entities for Instructor and Course — could be modeled explicitly
-...
+```sql
+insert into Student_details ("RollNo","Name","Gender","Subject","MARKS") values (201,"David Lee","M","Physics",92)
+```
 
-## Extension (Prerequisite / Billing):
-Prerequisite:
+# **Output:**
 
-Could be modeled as a recursive relationship on the Course entity (e.g., Course A requires Course B)
+<img width="1236" height="324" alt="image" src="https://github.com/user-attachments/assets/2735ec96-43d3-4a30-b5bb-f3b325905533" />
 
-Attributes: CourseID, PrerequisiteCourseID
+# **Question 9**
+<img width="1234" height="476" alt="image" src="https://github.com/user-attachments/assets/cc0a23cd-9a95-4df5-a526-2c37e61baa8c" />
 
-Billing:
 
-Not modeled in this ER diagram
+```sql
+CREATE TABLE item (
+item_id    TEXT PRIMARY KEY,
+item_desc  TEXT NOT NULL,
+rate       INTEGER NOT NULL,
+icom_id    TEXT check(length(icom_id)=4),
+FOREIGN KEY (icom_id) REFERENCES company(com_id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+```
 
-Could be introduced with a new Billing entity connected to Student
+# **Output:**
 
-Attributes: BillID, StudentID, Amount, DueDate
+<img width="1237" height="443" alt="image" src="https://github.com/user-attachments/assets/1e81ca20-f093-4df5-b1f0-a3d02637ad12" />
 
-## Design Choices:
-Entity Identification: Focused on key academic entities: Student, Department, Program. These are commonly needed in a university database.
+# **Question 10**
+<img width="1232" height="374" alt="image" src="https://github.com/user-attachments/assets/70b5840e-b5da-4b36-813b-5bee390da405" />
 
-Attributes: Captured essential properties only (like ID, name, etc.), assuming additional attributes could be added as needed.
 
-Teaches: Although modeled as an entity, it could be better modeled as a relationship between Instructor and Course.
+```sql
+insert into Employee("EmployeeID","Name","Department","Salary")
+select EmployeeID, Name, Department, Salary from Former_employees
+```
 
-Simplification Assumptions:
+# **Output:**
 
-No separate Instructor or Course entity was modeled despite relevant attributes (likely for simplicity)
+<img width="1237" height="359" alt="image" src="https://github.com/user-attachments/assets/3560d43b-228b-417f-9626-008a5ee1d5e8" />
 
-The University relationship groups multiple entities, which might be more useful broken into simpler, binary relationships for clarity.
+**SEB Grade** 
+
+<img width="1363" height="76" alt="image" src="https://github.com/user-attachments/assets/6be724fc-5e68-437a-a070-2cef9e5594e8" />
 
 ## RESULT
-Thus, the Entity-Relationship (ER) Diagram have been created successfully.
+Thus, the SQL queries to implement different types of constraints and DDL commands have been executed successfully.
